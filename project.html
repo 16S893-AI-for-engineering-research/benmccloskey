@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Project — Ben McCloskey</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <main>
+    <div class="wrap">
+      <span class="tag">Project outline</span>
+      <h1>An agentic, verifiable framework for MEDEVAC dispatch modeling</h1>
+      <p class="lede">Drawn from my week-1 one-page proposal draft (<a href="https://github.com/benmccloskey" target="_blank" rel="noopener">see repo</a>). Not yet advisor-signed — sign-off is due 22 September.</p>
+
+      <h2>Research question</h2>
+      <div class="card">
+        <p>Can an AI agent reliably verify that MEDEVAC dispatch optimization formulations — mixed-integer programs (MIPs) and Markov decision processes (MDPs) — satisfy explicit mathematical and operational invariants, and produce behavior consistent with their intended formulation?</p>
+        <p style="color:var(--muted); font-size:0.85rem;">Open item: "reliably" still needs a precise definition — likely a catch rate on a seeded-bug suite plus a false-alarm rate. Not yet defined.</p>
+      </div>
+
+      <h2>Why this is live research, not a course toy</h2>
+      <p>As part of my PhD, I'm developing new optimization formulations for dispatching MEDEVAC assets (helicopters and ground ambulances). My committee has pointed me toward two directions: MIP and MDP models. This course project builds a structured environment for studying whether an agent can help construct and verify those formulations — checking that constraints are feasible, internally consistent, and aligned with intended operational behavior — and eventually add an explainability (XAI) layer for sensitivity and counterfactual analysis grounded in operations research fundamentals.</p>
+      <p>Most existing MEDEVAC dispatch literature leans on sequential decision-making (MDPs); MIP-based formulations are comparatively under-explored. This framework doubles as a verification environment for the course and as groundwork for my dissertation's final dispatch formulation, which aims to incorporate casualty physiological state (e.g. blood pressure, other deterioration measures) directly into resource-allocation decisions.</p>
+
+      <h2>Data, IP, and export control</h2>
+      <table>
+        <tr><th>Item</th><th>Status</th></tr>
+        <tr><td>Data</td><td>Open-source or synthetically generated only. Proprietary lab data stays off this repo.</td></tr>
+        <tr><td>GitHub</td><td>Repo will contain only the open-source/synthetic problem formulation, agent framework, verification tests, and reproducible experiment configs.</td></tr>
+        <tr><td>Export control / ITAR / FOUO</td><td>N/A for the course project.</td></tr>
+        <tr><td>Stays off-repo</td><td>Proprietary lab datasets, unpublished PhD-specific model extensions, internal research code/parameters not required to reproduce the course project.</td></tr>
+      </table>
+
+      <h2>Where delegation stops</h2>
+      <p>Delegation stops when the agent reports a violation in a formulation or invariant check — I decide whether the model, the invariant, or the scenario itself is wrong. The agent does not get to silently "fix" the model. Out of scope for this term: replacing the optimizer itself, and new physiology modeling (that's downstream dissertation work, not this course project).</p>
+      <p style="color:var(--muted); font-size:0.85rem;">Term-success metric is still a placeholder in the draft (e.g. "catch k of n seeded MIP bugs") — to be pinned down before the 22 September sign-off.</p>
+
+      <h2>Status</h2>
+      <ul class="clean">
+        <li>One-pager drafted (LaTeX, in <code>proposal/</code>). Several sections still flagged <code>[todo]</code> for precision.</li>
+        <li>Advisor sign-off: due Tuesday 22 September.</li>
+        <li>Lightning talk: Thursday 24 September.</li>
+      </ul>
+    </div>
+  </main>
+
+  <script src="js/layout.js"></script>
+</body>
+</html>
