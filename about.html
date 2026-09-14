@@ -25,25 +25,25 @@
       <div class="card about-card">
         <span class="entry-kicker">02 &middot; Why this course</span>
         <ul class="entry-list">
-          <li>My dissertation work involves building and comparing mixed-integer programming (MIP) and Markov decision process (MDP) formulations for dispatching MEDEVAC assets (helicopters and ground ambulances) under uncertainty.</li>
+          <li>My dissertation work involves building and comparing mixed-integer programming (MIP) and Markov decision process (MDP) formulations for dispatching MEDEVAC assets (helicopters and ground ambulances).</li>
           <li>Model development and verification is slow and error-prone by hand.</li>
-          <li>This course is where I test whether a coding agent can genuinely accelerate that work without me losing track of whether the results are correct.</li>
+          <li>This course is where I test whether a coding agent can genuinely accelerate verification work without me losing track of whether the results are correct.</li>
         </ul>
       </div>
 
-      <div class="card about-card">
-        <span class="entry-kicker">03 &middot; How I use Agentic AI in Dispatching Work today</span>
-        <ul class="entry-list">
-          <li>On a MEDEVAC decision-support project with the DAF-MIT AI Accelerator, I use agents to build an explainable-dispatch pipeline itself, not just to write about it.
-            <ul class="entry-sublist">
-              <li>A tool-calling supervisor decides which evidence layers (patient, dispatch, mission) an explanation needs; a separate synthesis step composes the brief, and only from evidence the supervisor actually opened.</li>
-              <li>Grounding is enforced outside the model: layer tools return adapter output verbatim (no claim authorship), a model-raised clarification is advisory only, and skipping the required dispatch layer fails closed to a deterministic template brief instead of an LLM guess.</li>
-              <li>A separate tool-calling dispatch-epoch assigner proposes asset&ndash;casualty pairings from feasibility-lookup tools, validates its own plan against the same evaluator used to score it, and pauses for a human decision on hard cases rather than silently committing.</li>
-              <li>Every graph is tested against a fake chat model at the node boundary; I still read the evidence trace myself — the pipeline decides what evidence to show, I decide whether the resulting explanation is honest.</li>
-            </ul>
-          </li>
-        </ul>
-      </div>
+     <div class="card about-card">
+  <span class="entry-kicker">03 &middot; How I use Agentic AI in Dispatching Work today</span>
+  <ul class="entry-list">
+    <li>On a MEDEVAC decision-support project with the DAF-MIT AI Accelerator, I use agents around an optimization-based dispatcher so explanations and proposed assignments stay tied to solver evidence.
+      <ul class="entry-sublist">
+        <li>A supervisor agent chooses which evidence layers an explanation needs (patient, dispatch, mission). A separate step writes the brief, and only from layers that were actually opened.</li>
+        <li>Grounding is enforced outside the model. Evidence tools return solver output unchanged, a model’s clarification request is advisory, and skipping the required dispatch layer falls back to a template brief instead of an LLM guess.</li>
+        <li>A separate assigner agent proposes asset-casualty pairings from a feasibility lookup. The same evaluator used to score the plan can then reject it. On hard cases the loop pauses for a human decision rather than committing.</li>
+        <li>Each graph is tested with a fake model at the node boundary. The pipeline decides what evidence to show. I still read the trace and decide whether the explanation is honest.</li>
+      </ul>
+    </li>
+  </ul>
+</div>
 
       <ul class="social-links-list">
         <li>

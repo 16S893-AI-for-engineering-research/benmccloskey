@@ -1,5 +1,7 @@
 # Portfolio site — Ben McCloskey (16.S893)
 
+**Live site:** [16s893-ai-for-engineering-research.github.io/benmccloskey](https://16s893-ai-for-engineering-research.github.io/benmccloskey/)
+
 Static, no-build multi-page site for Assignment 1 of 16.S893 (AI Agents for Engineering Research).
 Requirements pulled directly from [slide 28](https://16s893-ai-for-engineering-research.github.io/class-repo/sessions/orientation/slides/#28):
 
