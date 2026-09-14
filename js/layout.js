@@ -32,6 +32,10 @@
   `;
   document.body.insertBefore(header, document.body.firstChild);
 
+  const transitionScript = document.createElement("script");
+  transitionScript.src = "js/transition.js";
+  document.body.appendChild(transitionScript);
+
   const footer = document.createElement("footer");
   footer.className = "site-footer";
   footer.innerHTML = `

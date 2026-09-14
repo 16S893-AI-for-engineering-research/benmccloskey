@@ -4,14 +4,145 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>AI-Use Dev Log — Ben McCloskey</title>
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=13" />
+  <noscript><style>body{opacity:1 !important;}</style></noscript>
 </head>
 <body>
   <main>
     <div class="wrap">
-      <span class="tag">AI-use dev log</span>
       <h1>Dev log</h1>
       <p class="lede">What I delegated to an agent, what I checked myself, what I rejected, and what it cost. Updated per session.</p>
+
+      <div class="log-entry">
+        <div class="log-date">14 Sept 2026 &middot; Project page rebuild &mdash; about-page layout, condensed bullets, sourced photos + attribution</div>
+        <p>
+          <span class="badge delegated">Delegated</span> Rebuilt <code>project.html</code> from a plain <code>h2</code>/<code>p</code>/<code>table</code> layout into the same <code>.tag</code> + <code>about-title</code>/<code>about-lede</code> + <code>.card.about-card</code>/<code>entry-kicker</code>/<code>entry-list</code> pattern already used on <code>about.html</code>, so the two content pages share one visual language instead of two.
+        </p>
+        <p>
+          <span class="badge delegated">Delegated</span> Rewrote every section's content as short bullets pulled from the actual proposal draft (<code>proposal/week1-one-page-draft.tex</code>) rather than inventing new framing &mdash; research question, the problem, why it matters, what the agent should do, data/IP/export control, and where delegation stops. First pass just broke the original paragraphs into one-bullet-per-sentence, which wasn't the ask; second pass condensed each bullet into short phrases/clauses (e.g. "Literature leans MDP; MIP formulations are under-explored" instead of the full original sentence) per direct feedback that bullets should read as bullets, not sentences with a dot in front.
+        </p>
+        <p>
+          <span class="badge delegated">Delegated</span> Added a 3-photo credit strip below the title (helicopter litter-load, ambulance, masked responder &mdash; all Unsplash), using <code>sips</code> to downscale the originals (4000&ndash;6000px wide sources) to 900px-wide web copies in <code>figures/project/web/</code> so the page doesn't ship multi-megabyte originals. Attribution is a hover/focus caption (<code>figcaption</code> that fades in on <code>:hover</code>/<code>:focus-within</code>) plus a native <code>title</code> tooltip on the <code>&lt;figure&gt;</code>, and each image links out to its Unsplash photo page per the required credit format ("Photo by X on Unsplash", both names and "Unsplash" as separate links to the photographer profile / photo page).
+        </p>
+        <p>
+          <span class="badge checked">Checked</span> Reordered the three photos on request (helicopter first, ambulance middle, mask photo last &mdash; swapping the original first/third) and re-screenshotted with headless Chrome to confirm the visual order actually changed left-to-right, not just the DOM order.
+        </p>
+        <p>
+          <span class="badge checked">Checked</span> Verified every layout/content pass with a headless-Chrome screenshot (<code>--headless=new --screenshot</code>) before calling it done: initial about-page-style rewrite, the bullet-condensation pass, the photo grid addition, and the reorder &mdash; four separate screenshot checks this session. Bumped <code>style.css</code>'s cache-busting query string on every CSS change (<code>v=9</code> &rarr; <code>v=12</code>) so a reload picks up the new photo-grid/figcaption rules instead of serving a stale stylesheet.
+        </p>
+        <p style="color:var(--muted); font-size:0.85rem;">
+          Verification path: content cross-checked against <code>proposal/week1-one-page-draft.tex</code> rather than invented; four headless-Chrome screenshots across the session (layout rebuild, bullet condensation, photo grid, reorder) as the visual regression check; image dimensions confirmed via <code>sips -g pixelWidth -g pixelHeight</code> before and after resizing. Not yet verified: no automated link-check on the six outbound Unsplash attribution URLs; cross-browser rendering of the hover/focus caption fade beyond Chromium is untested.
+        </p>
+      </div>
+
+      <div class="log-entry"> — avatar, social icons, card layout, sourced AI-use copy</div>
+        <p>
+          <span class="badge delegated">Delegated</span> Iterative restyle of <code>about.html</code> across many small requests in one session: added a circular profile photo at the top (<code>figures/about/me-circle.png</code>), generated by isolating the subject from the original <code>me.png</code>'s solid dark background with a Pillow alpha mask (distance-from-background-color threshold, feathered edge, cropped to the circular bounding box) rather than a hand-drawn crop — kept the original <code>me.png</code> untouched on disk. Iterated the avatar size twice (140px &rarr; 220px) on request.
+        </p>
+        <p>
+          <span class="badge delegated">Delegated</span> Added four hyperlinked social icons (GitHub, LinkedIn, Google Scholar, Medium) as inline <code>currentColor</code> SVGs so they inherit the site's muted/accent hover treatment, then iterated placement/sizing several times per direct feedback: centered the row, enlarged icons 22px &rarr; 40px &rarr; 64px, removed the "GitHub: @benmccloskey" text line once the icon made it redundant, and moved the icon list out of a boxed <code>.social-links</code> div into a plain centered <code>ul</code> to match a later "don't put this in a card" instruction.
+        </p>
+        <p>
+          <span class="badge delegated">Delegated</span> Restructured Background / Why this course / How I use AI today from paragraph prose into bulleted cards matching the home page's <code>entry-kicker</code> + <code>entry-list</code> pattern (numbered mono-uppercase label, dot-bulleted list) instead of the plain <code>.card</code> box originally used, per explicit direction to mirror the home page's card heading structure. Then reversed one round-trip on request: put the three sections back into <code>.card</code> containers (visual boxes) but kept the bigger bullet text and kicker labels, added explicit <code>margin-bottom</code> gaps between the three cards, and switched list-item color from muted gray to <code>var(--fg)</code> (near-white) for readability.
+        </p>
+        <p>
+          <span class="badge checked">Checked</span> Did not accept the "How I use AI today" rewrite on invented content. Was pointed at a real, separate project directory (<code>PHANTOM/nine-line-agent-workflow/CLEAR</code>, a LaTeX conference paper on an agentic MEDEVAC decision-support system) and read <code>paper_outline.md</code> and <code>what_to_add.md</code> directly before writing a single line of new copy, rather than guessing from the folder name. The three new bullets (scoped rewrite passes bounded by an explicit written spec; terminology-freeze enforcement; retaining personal verification of substantive claims) are a direct paraphrase of that outline's own "Spine," "Terminology freeze," and "Out of scope unless you ask" sections — not paraphrased from memory of what an agent workflow "usually" looks like.
+        </p>
+        <p>
+          <span class="badge checked">Checked</span> Verified every visual change with a headless-Chrome screenshot (<code>--headless=new --screenshot</code>) before calling it done — ten separate screenshot passes across this session, one per major layout change (avatar add, icon add/resize/center, card-removal, card-reinstatement, header resize, gap/color change) — rather than trusting the HTML/CSS diff alone.
+        </p>
+        <p>
+          <span class="badge rejected">Rejected / open</span> Corrected two small factual claims myself rather than letting the agent's first draft stand: the B.S./commissioning-source line was missing the actual institutions (United States Air Force Academy for the B.S., Air Force Institute of Technology for the M.S.) until I supplied them, and an em-dash aside naming "helicopters and ground ambulances" was cut on request since it overstated what the dissertation model currently covers. Neither of these came from the agent inventing detail — both were my corrections to under- or over-specified agent-authored text.
+        </p>
+        <p style="color:var(--muted); font-size:0.85rem;">
+          Verification path: source material for the AI-use bullets read directly from <code>paper_outline.md</code>/<code>what_to_add.md</code> in the CLEAR repo, not invented; ten headless-Chrome screenshots across the session as the visual regression check; manual correction of two factual details (commissioning institutions, MEDEVAC asset-type overstatement) before publishing. Not yet verified: no cross-browser check beyond Chromium; the avatar background-removal script has not been re-run against a second source photo to confirm the threshold generalizes.
+        </p>
+      </div>
+
+      <div class="log-entry">
+        <div class="log-date">14 Sept 2026 &middot; Dispatch animation — resolving the open POI&rarr;MTF routing bug</div>
+        <p>
+          <span class="badge checked">Checked</span> Reopened the casualty-routing item left <span class="badge rejected" style="vertical-align:baseline;">Rejected / open</span> in the 13 Sept entry, this time reproducing it live rather than re-testing the state machine in isolation. Copied the real, unmodified <code>js/dispatch.js</code> into a Node harness that stubs just enough of <code>canvas</code>/<code>window</code>/<code>setInterval</code>/<code>requestAnimationFrame</code> to run the actual production file (not a re-implementation), with two <code>console.log</code> lines inserted only at the two <code>heli.leg = "toBase"</code> assignment sites. Drove it through 3 simulated hours (~2,400+ leg transitions) with a manually advanced clock so timing-dependent behavior wasn't left to chance viewing.
+        </p>
+        <p>
+          Result: the report was correct, and it wasn't a rendering artifact — it was in the logic. <code>dispatch.js</code> had a deliberate "false alarm" branch: POIs spawned with <code>hasCasualty: false</code> (30% of POIs, per <code>Math.random() &lt; 0.7</code>) sent the helicopter straight from <code>toPOI</code> to <code>toBase</code>, skipping the MTF entirely. The trace showed 707 such direct <code>toPOI&rarr;toBase</code> transitions in 3 hours — reproducing the reported bug in the shipped file itself. The prior session's 200k-trial check had only verified that a <code>carrying=true</code> helicopter never skips the MTF, which was true and beside the point; the actual bug was a <code>carrying=false</code> helicopter skipping it, a case that check never asserted against.
+        </p>
+        <p>
+          <span class="badge delegated">Delegated</span> Removed the false-alarm shortcut in <code>advanceHeli()</code>: every completed <code>toPOI</code> leg now routes to the nearest MTF regardless of <code>hasCasualty</code>, and <code>heli.carrying</code> is set from <code>hasCasualty</code> purely for the helicopter's color on that leg, no longer for routing. Updated the header comment in <code>dispatch.js</code> to state the invariant plainly: every pickup goes POI &rarr; MTF &rarr; BASE.
+        </p>
+        <p>
+          <span class="badge checked">Checked</span> Re-ran the identical live-trace harness against the patched file (same 3-hour, real-clock run): zero <code>toPOI&rarr;toBase</code> transitions, 2,426 <code>toPOI&rarr;toMTF</code> completions, 2,425 <code>toMTF&rarr;toBase</code> departures (the one-transition gap is a leg still in flight when the trace window closed, not a missed hop). Also loaded the patched <code>index.html</code> in headless Chrome (<code>--headless=new --screenshot</code>) and visually confirmed the canvas, legend, and markers still render with no console errors.
+        </p>
+        <p style="color:var(--muted); font-size:0.85rem;">
+          Verification path: real (unmodified except two log lines) <code>dispatch.js</code> executed inside a minimal Node/canvas/timer harness, not a state-machine re-implementation; 3-simulated-hour, real-clock traces before and after the fix (707 violating transitions &rarr; 0); headless-Chrome screenshot confirming the live page still renders correctly post-fix. This closes the item left open on 13 Sept — root cause was a routing branch on <code>hasCasualty</code>, not a rendering-layer issue as originally suspected.
+        </p>
+      </div>
+
+      <div class="log-entry">
+        <div class="log-date">14 Sept 2026 &middot; Home hero — APL figure placement, transparency, and gradient fill</div>
+        <p>
+          <span class="badge delegated">Delegated</span> Placed <code>figures/apl.png</code> (later <code>apl-logo.jpg</code>, a larger source of the same mark) to the right of the "Verifiable agent formulations&hellip;" hero copy by wrapping the existing eyebrow/title/pipeline/lede block in a new <code>.hero-text</code> container and adding a sibling <code>.hero-figure</code>, both inside a <code>.hero-top</code> flex row that stacks vertically under 640px.
+        </p>
+        <p>
+          <span class="badge delegated">Delegated</span> Iterated through several treatments of the mark on request: (1) fixed-size image with a pulsing <code>drop-shadow</code> glow; (2) background swapped from the original white PNG to a transparent one, via a brightness-threshold alpha mask in Python/Pillow (channel average &gt; ~220&ndash;250 &rarr; transparent, with a smooth falloff instead of a hard cutoff so edges stay antialiased) &mdash; <code>figures/apl-transparent.png</code>, then <code>figures/apl-logo-transparent.png</code> once the larger 269&times;269 source was dropped in; (3) sized up progressively from a fixed 96px to a responsive <code>clamp(200px, 30vw, 380px)</code>; (4) replaced the pulsing-glow treatment entirely with a static version once bigger felt better than animated; (5) final ask &mdash; render the mark in the same accent gradient as <code>.hero-title</code> (<code>linear-gradient(135deg, var(--accent-2), var(--accent))</code>) instead of its literal navy, done by swapping the <code>&lt;img&gt;</code> for an empty <code>&lt;span class="apl-mark"&gt;</code> with a gradient background and a CSS <code>mask-image</code> pointed at the transparent PNG, so the gradient shows through only where the logo's alpha channel is opaque.
+        </p>
+        <p>
+          <span class="badge checked">Checked</span> Computed the actual WCAG-style contrast ratio of the logo's navy (<code>rgb(10,66,155)</code>) against the page background (<code>#0b0f14</code>) before reaching for a fix &mdash; ~2.07:1, well under the 4.5:1 body-text guideline &mdash; instead of guessing why it looked muted. That number is why a plain size increase alone did not read as "easier to see": the fix that mattered was contrast (gradient fill / brightness), not scale.
+        </p>
+        <p>
+          <span class="badge checked">Checked</span> Verified the alpha-masking script itself rather than trusting the "looks transparent" claim: sampled pixel color histograms with Pillow (<code>im.getcolors()</code>) before and after each transform to confirm near-white pixels went to <code>alpha=0</code> while the true logo-blue pixels stayed at <code>alpha=255</code>, and visually inspected the resulting PNG at each step before wiring it into <code>index.html</code>.
+        </p>
+        <p>
+          <span class="badge rejected">Rejected / open</span> Did not keep the animated pulsing glow/halo &mdash; asked for and reverted to a static treatment once the bigger static version read better than the animated one. Have not tested the gradient-mask approach in non-Chromium browsers; <code>mask-image</code> support is broad in modern browsers but not cross-browser-verified here. Have not re-run the earlier headless-Chrome computed-style assertions from the 13 Sept redesign against this new markup, so there is no automated regression check yet for <code>.hero-top</code> / <code>.hero-figure</code> / <code>.apl-mark</code> beyond the manual visual pass and the pixel-histogram checks above.
+        </p>
+        <p style="color:var(--muted); font-size:0.85rem;">
+          Verification path: Pillow pixel-histogram sampling (<code>im.getcolors()</code>) before/after each alpha-mask transform; manual visual inspection of each generated PNG; a computed WCAG contrast-ratio calculation (Python) used to diagnose the "hard to see" report instead of guessing; cache-buster bump (<code>style.css?v=12</code>) on every CSS change so the diff loads on refresh. Not yet verified: cross-browser <code>mask-image</code> rendering; no automated re-run of the Playwright computed-style suite against the new hero markup.
+        </p>
+      </div>
+
+      <div class="log-entry">
+        <div class="log-date">13 Sept 2026 &middot; Home redesign — copy, typography, page transitions, theme</div>
+        <p>
+          <span class="badge delegated">Delegated</span> Rewrote the home page (<code>index.html</code>) copy and structure: dropped the placeholder "Assignment 1" pill, added an eyebrow line (<code>MIT AeroAstro &middot; 16.S893</code>), replaced the name-as-h1 with an actual project title ("Verifiable agents for MEDEVAC dispatch", kept in a <code>.hero-title</code> class so my name stays in the header brand instead of disappearing), added a <code>Formulate &rarr; Verify &rarr; Explain</code> pipeline line, and rewrote the lede to one clean sentence (the old copy had typos &mdash; "verfication", "devleopment", "Medeical"). Also normalized the three home cards to the same shape (short paragraph + link), since the first card was a raw bullet list and the other two were prose.
+        </p>
+        <p>
+          <span class="badge delegated">Delegated</span> Added a same-app feel across the four static pages: a ~450ms fade-in on load and fade-out on same-site link clicks (<code>js/transition.js</code>, wired in via <code>js/layout.js</code>) instead of a hard page reload. Iterated twice &mdash; first version used a scan-bar sweep effect, replaced with a plain fade per preference; then caught and fixed a real bug where the fade-in never visibly ran because the enter/leave classes were toggled within the same animation frame, so the browser never painted the "invisible" starting state to transition from.
+        </p>
+        <p>
+          <span class="badge delegated">Delegated</span> Swapped the site accent palette from orange/mint to blue/gray (<code>--accent: #5aa9ff</code>, <code>--accent-2: #cbd5e1</code>) and confirmed it propagates everywhere the theme variables are used &mdash; nav active state, links, <code>h2</code>, <code>.tag</code>, badges, brand accent, hero-title gradient &mdash; across all four pages, not just the homepage. Deliberately left the dispatch-animation legend colors (base/POI/MTF/heli markers) as hardcoded hex, since those encode meaning in the animation itself and shouldn't shift just because the UI chrome's accent color changed.
+        </p>
+        <p>
+          <span class="badge checked">Checked</span> Did not eyeball any of this in a real browser tab first. Used a headless Playwright browser to (1) assert computed styles matched every requested spec exactly &mdash; font families, hero-title font-size/weight/max-width, lede max-width/margin, canvas height at desktop vs. mobile viewport, <code>--max-w</code>, card margins &mdash; rather than trusting a screenshot alone; (2) sample <code>getComputedStyle(document.body).opacity</code> across the transition window frame-by-frame to confirm the fade actually animates, which is what caught the same-frame toggle bug above; (3) re-check computed colors on all four pages after the palette swap to confirm the theme change was not homepage-only.
+        </p>
+        <p>
+          <span class="badge checked">Checked</span> Root-caused a "transition not showing up" report as browser caching, not broken code &mdash; the same headless test passed cleanly in a fresh browser context. Fixed by adding cache-busting query strings (<code>?v=N</code>) to <code>style.css</code> and <code>layout.js</code> and bumping them on every subsequent edit, so a normal reload picks up changes instead of silently serving a stale asset.
+        </p>
+        <p style="color:var(--muted); font-size:0.85rem;">
+          Verification path: headless-Chrome (Playwright) computed-style assertions against the written spec for every CSS change in this entry; frame-sampled opacity trace across the fade transition; page/console error checks on all four pages after each change; visual screenshots used as a secondary cross-check, not the primary evidence. Not yet verified: real-device or real-browser confirmation beyond Chromium &mdash; no cross-browser or actual-hardware pass done this session.
+        </p>
+      </div>
+
+      <div class="log-entry">
+        <div class="log-date">13 Sept 2026 &middot; Home hero animation — MEDEVAC dispatch loop + legend</div>
+        <p>
+          <span class="badge delegated">Delegated</span> Reworked <code>js/dispatch.js</code> from a generic helicopter-flies-to-a-dot loop into a stylized BASE &rarr; POI (Point of Injury) &rarr; MTF (Medical Treatment Facility) &rarr; BASE cycle: 1&ndash;3 POIs on the map at a time (count drifts, oldest untaken POI expires so it doesn't just saturate at 3), POIs disappear on pickup, helicopters recolor while carrying a casualty, two MTFs at fixed distinct map locations, and a redrawn helicopter icon (fuselage, tail boom, spinning main/tail rotor) instead of a triangle. Also delegated a compact single-row, color-coded legend under the canvas (icon + spelled-out acronym per marker, diamond-separated, centered) replacing the old prose caption.
+        </p>
+        <p>
+          <span class="badge checked">Checked</span> Caught a real regression myself: after a few legend edits, the SVG icons in <code>index.html</code> were tagged <code>icon-base</code>/<code>icon-poi</code>/<code>icon-mtf</code>/<code>icon-heli-*</code>, but <code>css/style.css</code> only defined <code>.legend-base</code>/<code>.legend-poi</code>/etc. on the <code>&lt;li&gt;</code> — a silent class-name mismatch, so the legend rendered with no color at all. Found it with a direct <code>grep</code> diff of the HTML classes against the CSS selectors rather than guessing from a screenshot. Fixed by moving the correct <code>legend-*</code> classes onto each <code>&lt;li&gt;</code> so both icon and label inherit color via <code>currentColor</code>, and restored the spelled-out acronym labels that an earlier edit had dropped. Verified the fix with a headless-Chrome screenshot (<code>--headless=new --screenshot</code>), cropped and inspected directly.
+        </p>
+        <p>
+          Separately, checked a bug report that a helicopter carrying a casualty could skip the MTF and fly straight home. Instead of eyeballing the canvas (timing-dependent, easy to miss or misjudge by watching), extracted the exact leg-transition logic from <code>advanceHeli()</code> into a standalone Node script with instant leg completion, ran 200,000 simulated transitions across two helicopters, and asserted <code>carrying === false</code> every time a <code>toBase</code> leg starts. Result: zero violations in 200k trials — as written, a helicopter can only start <code>toBase</code> after a no-casualty pickup or after finishing a <code>toMTF</code> leg (which clears <code>carrying</code> on arrival).
+        </p>
+        <p>
+          <span class="badge rejected">Rejected / open</span> Did not mark the casualty-routing bug as resolved. The offline trace tests the state machine in isolation, not what actually painted in the browser tab that was reported — a stale page load, rapid POI churn, or a rendering artifact could all look like a violation without the underlying logic being wrong. Leaving open until reproduced or ruled out live, e.g. by adding a temporary <code>console.log</code> on every <code>heli.leg</code> transition in <code>dispatch.js</code> itself and watching it run in a real tab, rather than trusting a re-implementation of the same logic to catch a rendering-layer issue. <strong>Update, 14 Sept:</strong> reproduced live and fixed — see that day's entry above; root cause was a no-casualty routing branch this trial never tested for, not a rendering issue.
+        </p>
+        <p style="color:var(--muted); font-size:0.85rem;">
+          Verification path: (1) <code>grep</code> diff of HTML classes vs. CSS selectors caught the legend color bug directly; (2) headless-Chrome screenshot of the fixed legend, cropped and viewed; (3) standalone Node re-implementation of the dispatch state machine, 200k-transition trace, zero <code>carrying=true</code> at <code>toBase</code> start — a logic-level check only, not yet a live-browser confirmation of the reported bug. Next step if the casualty-skip recurs: instrument <code>dispatch.js</code> directly and capture the transition live.
+        </p>
+      </div>
 
       <div class="log-entry">
         <div class="log-date">10 Sept 2026 &middot; Assignment 1 — portfolio site</div>
@@ -38,6 +169,6 @@
     </div>
   </main>
 
-  <script src="js/layout.js"></script>
+  <script src="js/layout.js?v=6"></script>
 </body>
 </html>
