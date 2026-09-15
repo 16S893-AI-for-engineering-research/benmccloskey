@@ -32,8 +32,12 @@
   `;
   document.body.insertBefore(header, document.body.firstChild);
 
+  const scriptDir = document.currentScript
+    ? new URL(".", document.currentScript.src).href
+    : "../js/";
+
   const transitionScript = document.createElement("script");
-  transitionScript.src = "js/transition.js";
+  transitionScript.src = new URL("transition.js", scriptDir).href;
   document.body.appendChild(transitionScript);
 
   const footer = document.createElement("footer");
@@ -51,6 +55,6 @@
   document.body.appendChild(eggOverlay);
 
   const eggScript = document.createElement("script");
-  eggScript.src = "js/egg.js";
+  eggScript.src = new URL("egg.js", scriptDir).href;
   document.body.appendChild(eggScript);
 })();
