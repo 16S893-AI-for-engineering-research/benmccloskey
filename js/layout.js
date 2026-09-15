@@ -34,7 +34,7 @@
 
   const scriptDir = document.currentScript
     ? new URL(".", document.currentScript.src).href
-    : "../js/";
+    : "js/";
 
   const transitionScript = document.createElement("script");
   transitionScript.src = new URL("transition.js", scriptDir).href;

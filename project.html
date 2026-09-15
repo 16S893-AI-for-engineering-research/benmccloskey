@@ -3,17 +3,106 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta http-equiv="refresh" content="0; url=pages/project.html" />
-  <link rel="canonical" href="pages/project.html" />
   <title>Project — Benjamin McCloskey</title>
-  <style>
-    html, body { margin: 0; background: #0b0f14; color: #93a1b0; font-family: sans-serif; }
-    a { color: #5aa9ff; }
-    p { margin: 2rem auto; max-width: 40rem; padding: 0 1.5rem; }
-  </style>
-  <script>location.replace("pages/project.html");</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=16" />
+  <noscript><style>body{opacity:1 !important;}</style></noscript>
 </head>
 <body>
-  <p><a href="pages/project.html">Open Project</a></p>
+  <main>
+    <div class="wrap">
+      <h1 class="about-title">An Agentic, Verifiable Framework for MEDEVAC Dispatch Modeling</h1>
+      <p class="lede about-lede">16.S893 Project Proposal </p>
+
+      <div class="photo-grid">
+        <figure title="Photo by Jacob Narkiewicz on Unsplash">
+          <a class="photo-link" href="https://unsplash.com/photos/medical-personnel-load-a-stretcher-into-an-air-ambulance-helicopter-yjUFagLT3Dg?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="noopener">
+            <img src="figures/project/web/jacob-narkiewicz-yjUFagLT3Dg-unsplash.jpg" alt="Medical personnel load a stretcher into an air ambulance helicopter" loading="lazy" />
+          </a>
+          <figcaption>Photo by <a href="https://unsplash.com/@jakeynarky?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="noopener">Jacob Narkiewicz</a> on <a href="https://unsplash.com/photos/medical-personnel-load-a-stretcher-into-an-air-ambulance-helicopter-yjUFagLT3Dg?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="noopener">Unsplash</a></figcaption>
+        </figure>
+        <figure title="Photo by Jonnica Hill on Unsplash">
+          <a class="photo-link" href="https://unsplash.com/photos/white-and-blue-ambulance-van-traveling-on-road-V5nq6u-Ce_U?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="noopener">
+            <img src="figures/project/web/jonnica-hill-V5nq6u-Ce_U-unsplash.jpg" alt="White and blue ambulance van traveling on a road" loading="lazy" />
+          </a>
+          <figcaption>Photo by <a href="https://unsplash.com/@jonnicaahill?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="noopener">Jonnica Hill</a> on <a href="https://unsplash.com/photos/white-and-blue-ambulance-van-traveling-on-road-V5nq6u-Ce_U?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="noopener">Unsplash</a></figcaption>
+        </figure>
+        <figure title="Photo by Irwan on Unsplash">
+          <a class="photo-link" href="https://unsplash.com/photos/person-in-green-shirt-wearing-white-mask-rbDE93-0hHs?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="noopener">
+            <img src="figures/project/web/irwan-rbDE93-0hHs-unsplash.jpg" alt="Medical responder wearing a mask" loading="lazy" />
+          </a>
+          <figcaption>Photo by <a href="https://unsplash.com/@blogcious?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="noopener">Irwan</a> on <a href="https://unsplash.com/photos/person-in-green-shirt-wearing-white-mask-rbDE93-0hHs?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText" target="_blank" rel="noopener">Unsplash</a></figcaption>
+        </figure>
+      </div>
+
+      <div class="card about-card">
+        <span class="entry-kicker">01 &middot; Research question</span>
+        <ul class="entry-list">
+          <li>Can an AI agent detect violations of mathematical/operational invariants in MEDEVAC dispatch formulations (MIPs and MDPs)?</li>
+          <li>Can it flag when model behavior deviates from the intended formulation?</li>
+          <li>Can an AI agent pipeline properly explain constraints and formlulation? (stretch)</li>
+          <li>Can an AI agent pipeline provide MEDEVAC dispatching formulation recommendations grounded on factual information? (stretch)</li>
+
+
+        </ul>
+      </div>
+
+      <div class="card about-card">
+        <span class="entry-kicker">02 &middot; The problem</span>
+        <ul class="entry-list">
+          <li>Future large disasters can generate casualty demand exceeding available MEDEVAC capacity.</li>
+          <li>Allocating limited evacuation assets across casualties, destinations, and time is a sequential resource-allocation problem.</li>
+          <li>Literature leans towards Markov Decision Processes (MDPs); Mixed Integer Programming (MIPs) formulations are under-explored.</li>
+          <li>Failure mode: not solver failure, but a valid-looking solution that's operationally wrong  (i.e. missing exclusivity constraints, reversed inequalities, invalid transitions, omitted rules)</li>
+        </ul>
+      </div>
+
+      <div class="card about-card">
+        <span class="entry-kicker">03 &middot; Why it matters</span>
+        <ul class="entry-list">
+          <li>Dissertation: MIP + MDP formulations for dispatching limited MEDEVAC assets.</li>
+          <li>LLMs can translate planning problems into optimization formulations, and self-improve via intermediate assessment.</li>
+          <li>Question: Can an agent orchestrate OR tools (invariants, solvers, sensitivity tests) to <em>challenge and verify</em> a model, not just build one?</li>
+          <li>Method: Define invariants, inject known defects, test whether the agent catches them via inspection, solver artifacts, controlled experiments.</li>
+          <li>Payoff: (1) reproducible error-catching during development; (2) perturbation/sensitivity tests separating intent from bugs; (3) solver-grounded evidence for future constraint-level explanations — useful for dev and later auditing.</li>
+        </ul>
+      </div>
+
+      <div class="card about-card">
+        <span class="entry-kicker">04 &middot; What the agent should do</span>
+        <ul class="entry-list">
+          <li><strong>First:</strong> Build/modify constraints; check feasibility, internal consistency, and alignment with intended behavior.</li>
+          <li><strong>Stretch Goal:</strong> Add an eXplainable AI (XAI) layer for interpretable explanations of constraints, assumptions, and solution behavior.</li>
+          <li><strong>Stretch Goal:</strong> Operations Research-grounded sensitivity + counterfactual analysis on demand.</li>
+        </ul>
+      </div>
+      
+      
+      <div class="card about-card">
+        <span class="entry-kicker">05 &middot; Data, IP, and export control</span>
+        <ul class="entry-list">
+          <li><strong>Data:</strong> Open-source or synthetic only. No proprietary lab data on this repo.</li>
+          <li><strong>GitHub:</strong> Formulation, agent harness, verification tests, and reproducible experiment configurations.</li>
+          <li><strong>Export Control / ITAR / FOUO / Advisor IP:</strong> N/A for the course project.</li>
+          <li><strong>Off-Repo:</strong> Proprietary lab data, unpublished PhD extensions, and internal parameters not needed to reproduce the course project.</li>
+        </ul>
+      </div>
+
+      
+
+      <div class="card about-card">
+        <span class="entry-kicker">06 &middot; Where delegation stops</span>
+        <ul class="entry-list">
+          <li>Stops at a reported violation. I decide if it's the model, the invariant, or the scenario that's wrong.</li>
+          <li>Agent never silently "fixes" the model.</li>
+          <li>Out of scope this term: replacing the optimizer. Extensions to PhD contributions.</li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/layout.js?v=8"></script>
 </body>
 </html>
