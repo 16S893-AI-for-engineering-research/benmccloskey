@@ -77,7 +77,7 @@
       x: 90 + Math.random() * (w - 180),
       y: 20 + Math.random() * (h - 40),
       born: performance.now(),
-      hasCasualty: Math.random() < 0.7,
+      hasCasualty: true,
       taken: false,
     });
   }
@@ -273,8 +273,8 @@
         const idx = pois.indexOf(heli.poi);
         if (idx !== -1) pois.splice(idx, 1);
 
-        // Every pickup routes through an MTF before heading home.
-        heli.carrying = heli.poi.hasCasualty;
+        // Every pickup carries a casualty through an MTF before heading home.
+        heli.carrying = true;
         const mtf = nearestMTF(heli.poi);
         heli.from = heli.poi;
         heli.target = mtf;
