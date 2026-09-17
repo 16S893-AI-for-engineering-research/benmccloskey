@@ -80,6 +80,9 @@
       hasCasualty: true,
       taken: false,
     });
+    // #region agent log
+    fetch('http://127.0.0.1:7446/ingest/3d36ad54-13f3-443a-931e-e1c752ab806c',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'7fb68d'},body:JSON.stringify({sessionId:'7fb68d',hypothesisId:'B',location:'dispatch.js:spawnPOI',message:'POI spawned',data:{hasCasualty:true,poiCount:pois.length},timestamp:Date.now()})}).catch(()=>{});
+    // #endregion
   }
   for (let i = 0; i < targetPOICount; i++) spawnPOI();
 
@@ -110,8 +113,8 @@
   }, 1000);
 
   const helis = [
-    { t: 0, speed: 0.4, leg: "home", target: null, carrying: false, poi: null },
-    { t: 0, speed: 0.3, leg: "home", target: null, carrying: false, poi: null },
+    { id: 0, t: 0, speed: 0.4, leg: "home", target: null, carrying: false, poi: null },
+    { id: 1, t: 0, speed: 0.3, leg: "home", target: null, carrying: false, poi: null },
   ];
 
   function pickPOI() {
@@ -228,12 +231,20 @@
     ctx.save();
     ctx.translate(1, -1);
     ctx.rotate(spin);
-    ctx.strokeStyle = "rgba(230,237,243,0.7)";
+    const rotorColor =
+      color === COLORS.casualty ? "rgba(255,77,79,0.7)" : "rgba(230,237,243,0.7)";
+    ctx.strokeStyle = rotorColor;
     ctx.beginPath();
     ctx.moveTo(-10, 0);
     ctx.lineTo(10, 0);
     ctx.stroke();
     ctx.restore();
+    // #region agent log
+    if (color === COLORS.casualty && !drawHeli._dbgRotorLogged) {
+      drawHeli._dbgRotorLogged = true;
+      fetch('http://127.0.0.1:7446/ingest/3d36ad54-13f3-443a-931e-e1c752ab806c',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'7fb68d'},body:JSON.stringify({sessionId:'7fb68d',hypothesisId:'C',location:'dispatch.js:drawHeli',message:'casualty body vs hardcoded rotor color',data:{bodyColor:color,rotorColor:rotorColor,rotorMatchesEmpty:rotorColor.indexOf('230,237,243')!==-1},timestamp:Date.now()})}).catch(()=>{});
+    }
+    // #endregion
 
     ctx.restore();
   }
@@ -265,6 +276,20 @@
     );
 
     const color = heli.carrying ? COLORS.casualty : COLORS.empty;
+    // #region agent log
+    if (heli.leg === "toMTF") {
+      const dist = Math.hypot((heli.target && heli.target.x) - (heli.from && heli.from.x), (heli.target && heli.target.y) - (heli.from && heli.from.y));
+      if (!heli._dbgMtfLogged) {
+        heli._dbgMtfLogged = true;
+        fetch('http://127.0.0.1:7446/ingest/3d36ad54-13f3-443a-931e-e1c752ab806c',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'7fb68d'},body:JSON.stringify({sessionId:'7fb68d',hypothesisId:'E',location:'dispatch.js:advanceHeli:toMTF-first',message:'first toMTF frame after pickup',data:{id:heli.id,carrying:heli.carrying,color:color,t:t,rawT:heli.t,dist:dist,poiNull:!heli.poi,hasCasualty:heli.poi&&heli.poi.hasCasualty},timestamp:Date.now()})}).catch(()=>{});
+      }
+      if (!heli.carrying || color !== COLORS.casualty) {
+        fetch('http://127.0.0.1:7446/ingest/3d36ad54-13f3-443a-931e-e1c752ab806c',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'7fb68d'},body:JSON.stringify({sessionId:'7fb68d',hypothesisId:'B',location:'dispatch.js:advanceHeli:toMTF-not-red',message:'toMTF drawn without casualty color',data:{id:heli.id,carrying:heli.carrying,color:color,t:t,dist:dist},timestamp:Date.now()})}).catch(()=>{});
+      }
+    } else {
+      heli._dbgMtfLogged = false;
+    }
+    // #endregion
     drawHeli(x, y, angle, color, now);
 
     if (t >= 1) {
@@ -274,12 +299,19 @@
         if (idx !== -1) pois.splice(idx, 1);
 
         // Every pickup carries a casualty through an MTF before heading home.
+        const carryingBefore = heli.carrying;
+        const drawnColor = color;
+        const poiNull = !heli.poi;
+        const hasCasualty = heli.poi && heli.poi.hasCasualty;
         heli.carrying = true;
         const mtf = nearestMTF(heli.poi);
         heli.from = heli.poi;
         heli.target = mtf;
         heli.leg = "toMTF";
         heli.t = 0;
+        // #region agent log
+        fetch('http://127.0.0.1:7446/ingest/3d36ad54-13f3-443a-931e-e1c752ab806c',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'7fb68d'},body:JSON.stringify({sessionId:'7fb68d',hypothesisId:'A',location:'dispatch.js:advanceHeli:pickup',message:'toPOI complete; color sampled before carrying update',data:{id:heli.id,carryingBefore:carryingBefore,carryingAfter:heli.carrying,drawnColor:drawnColor,emptyColor:COLORS.empty,poiNull:poiNull,hasCasualty:hasCasualty,poiWasInArray:idx!==-1},timestamp:Date.now()})}).catch(()=>{});
+        // #endregion
       } else if (heli.leg === "toMTF") {
         heli.carrying = false; // handed off at the MTF
         heli.from = heli.target;
