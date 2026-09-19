@@ -10,7 +10,6 @@ mathematical relationships, variable domains, bounds, and indexing
 wherever they can be determined from the source code.
 
 license: null
-
 compatibility: null
 
 metadata:
@@ -20,6 +19,12 @@ type: "model-analysis"
 ## allowed-tools: []
 
 # Optimization Formulation Summarizer
+
+## Verification Marker
+
+When this skill is used, begin the response with:
+
+`[optimization-formulation-summarizer active]`
 
 ## Purpose
 
@@ -33,7 +38,7 @@ The skill should summarize the model as written. It should not modify the formul
 
 ## Extract
 
-Identify and report the following components when they can be determined from the source code:
+Identify and report the following components when they can be determined from the source code.
 
 ### Index Sets
 
@@ -71,34 +76,23 @@ For each identifiable constraint or constraint family, report:
 * Indices over which the constraint is defined
 * Variables and parameters involved
 
+### Solver Information
+
+If present in the source code or available from model execution, report:
+
+* Solver used
+* Optimization status
+* Objective value
+* Solve time / runtime
+* MIP gap, when applicable
+
 ## Output Structure
 
-Use the following structure:
+Use the structure defined in:
 
-### Index Sets
+`assets/output-template.md`
 
-...
-
-### Parameters
-
-...
-
-### Decision Variables
-
-...
-
-### Objective
-
-...
-
-### Constraints
-
-...
-
-### Unresolved Elements
-
-...
-
+Do not add sections outside that template.
 ## Rules
 
 * Preserve the mathematical structure of the source code.
@@ -109,3 +103,8 @@ Use the following structure:
 * Clearly identify elements that cannot be determined from the code.
 * Do not correct, redesign, or optimize the formulation.
 * Do not evaluate whether the formulation is valid or operationally appropriate.
+* Do not provide recommendations, extensions, improvements, or alternative formulations.
+* Do not discuss scalability unless scalability is explicitly represented in the source code.
+* Do not classify the optimization problem unless that classification is explicitly represented in the source code.
+* Do not derive an optimal solution analytically unless it is explicitly produced by model execution.
+* Do not add sections outside the required output structure.

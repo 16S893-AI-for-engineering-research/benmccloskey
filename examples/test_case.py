@@ -81,12 +81,20 @@ model.addConstrs(
 model.optimize()
 
 # -----------------------------
-# Print solution
+# Print solution information
 # -----------------------------
-if model.status == GRB.OPTIMAL:
-    print(f"\nOptimal objective value: {model.objVal}")
+print("\n--- Solver Information ---")
+print(f"Optimization status code: {model.status}")
+print(f"Solve time: {model.Runtime:.6f} seconds")
 
+if model.status == GRB.OPTIMAL:
+    print(f"Optimal objective value: {model.objVal}")
+    print(f"MIP gap: {model.MIPGap:.6f}")
+
+    print("\n--- Assignments ---")
     for p in patients:
         for v in vehicles:
             if x[p, v].X > 0.5:
                 print(f"{p} assigned to {v}")
+else:
+    print("No optimal solution found.")
